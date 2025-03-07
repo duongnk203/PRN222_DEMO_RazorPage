@@ -1,0 +1,66 @@
+﻿@page
+@model RazorPageLab.Pages.Students.IndexModel
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h1>Students</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<!-- Thanh tìm kiếm -->
+<form method="get">
+    <p>
+        Find by name: <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        <a asp-page="./Index">Back to full List</a>
+    </p>
+</form>
+
+<!-- Bảng dữ liệu -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Student[0].FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.Student[0].Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Student[0].BirthDate)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Student)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.Email</td>
+                <td>@item.BirthDate?.ToString("MM/dd/yyyy")</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.StudentId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Phân trang -->
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-page="./Index"
+           asp-route-pageIndex="@(Model.PageIndex - 1)"
+           asp-route-SearchString="@Model.CurrentFilter"
+           class="btn btn-primary">Previous</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-page="./Index"
+           asp-route-pageIndex="@(Model.PageIndex + 1)"
+           asp-route-SearchString="@Model.CurrentFilter"
+           class="btn btn-primary">Next</a>
+    }
+</div>

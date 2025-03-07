@@ -1,6 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using RazorPageLab.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Lấy chuỗi kết nối từ appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("FapSystemDB");
+
+// Đăng ký DbContext để sử dụng SQL Server
+builder.Services.AddDbContext<FapSystemDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+// Thêm Razor Pages
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -9,7 +19,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
